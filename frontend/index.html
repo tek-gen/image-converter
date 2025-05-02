@@ -2,187 +2,269 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Image Converter</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f7f7f9;
+      font-family: "Segoe UI", sans-serif;
+      background: #f0f2f5;
+      margin: 0;
       padding: 2rem;
       display: flex;
       justify-content: center;
     }
-
     .container {
       background: white;
+      padding: 2rem;
+      border-radius: 1.25rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       max-width: 600px;
       width: 100%;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
-
-    .drop-zone {
-      border: 2px dashed #1e90ff;
-      border-radius: 10px;
-      padding: 1.5rem;
+    h1 {
       text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .drop-zone {
+      border: 2px dashed #007bff;
+      padding: 1.25rem;
+      border-radius: 1rem;
+      text-align: center;
+      background: #eef6ff;
       margin-bottom: 1rem;
-      color: #1e90ff;
       cursor: pointer;
     }
-
+    .drop-zone p {
+      margin: 0.5rem 0;
+      font-weight: 500;
+    }
+    input[type="file"], select, button {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      margin-top: 0.25rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
     .file-list {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
-      margin-top: 1rem;
+      gap: 0.75rem;
     }
-
     .file-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #f1f1f1;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
     }
-
-    .file-item img {
-      height: 40px;
+    .file-info {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+    .file-info img {
       width: 40px;
+      height: 40px;
       object-fit: cover;
-      margin-right: 1rem;
+      border-radius: 5px;
+      margin-right: 0.75rem;
     }
-
+    .file-info span {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .file-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
     .remove-btn {
-      background: transparent;
+      background: none;
+      color: #888;
+      font-size: 1.25rem;
       border: none;
-      font-size: 18px;
-      color: #cc0000;
       cursor: pointer;
     }
-
-    .btn {
-      display: inline-block;
-      background: #007bff;
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      text-decoration: none;
+    .remove-btn:hover {
+      color: red;
+    }
+    .output {
       margin-top: 1rem;
       text-align: center;
+      font-weight: 500;
     }
-
-    .btn:hover {
-      background: #0056b3;
-    }
-
-    .status {
+    .zip-button {
       margin-top: 1rem;
-      font-weight: bold;
+      width: 100%;
     }
-
-    @media screen and (max-width: 600px) {
-      .file-item {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    .download-btn {
+      padding: 0.5rem 1.2rem;
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Image Converter</h2>
-
-    <div class="drop-zone" id="drop-area">
-      📁 Drag and drop images here or click to select
+    <h1>Image Converter</h1>
+    <div class="drop-zone" id="dropZone">
+      <p>📂 Drag and drop up to 10 images or click to select</p>
+      <input type="file" id="fileInput" accept="image/*" multiple hidden />
+      <div>Selected files: <span id="fileCounterTop">0</span></div>
     </div>
-
-    <div id="counter">Selected files: 0</div>
-
-    <input type="file" id="fileElem" multiple accept="image/*" style="display:none">
+    <form id="convertForm">
+      <label for="formatSelect">Output format</label>
+      <select id="formatSelect" required>
+        <option value="png">PNG</option>
+        <option value="jpeg">JPEG</option>
+        <option value="webp">WEBP</option>
+      </select>
+      <button type="submit">Convert</button>
+    </form>
+    <div style="text-align:center; font-size: 0.9rem; margin-bottom: 0.5rem;">
+      Total selected: <span id="fileCounterBottom">0</span>
+    </div>
     <div class="file-list" id="fileList"></div>
-
-    <label for="format">Output format</label>
-    <select id="format">
-      <option value="png">PNG</option>
-      <option value="jpeg">JPEG</option>
-      <option value="webp">WEBP</option>
-    </select>
-
-    <button class="btn" id="convertBtn">Convert</button>
-
-    <div id="status" class="status"></div>
+    <div class="output" id="outputArea"></div>
+    <div id="downloadZipContainer" class="hidden">
+      <button id="downloadZipBtn" class="zip-button">📦 Download all as ZIP</button>
+    </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script>
-    const dropArea = document.getElementById('drop-area');
-    const fileElem = document.getElementById('fileElem');
+    const fileInput = document.getElementById('fileInput');
     const fileList = document.getElementById('fileList');
-    const counter = document.getElementById('counter');
-    const convertBtn = document.getElementById('convertBtn');
-    const statusBox = document.getElementById('status');
+    const fileCounterTop = document.getElementById('fileCounterTop');
+    const fileCounterBottom = document.getElementById('fileCounterBottom');
+    const output = document.getElementById('outputArea');
+    const downloadZipContainer = document.getElementById('downloadZipContainer');
+    const downloadZipBtn = document.getElementById('downloadZipBtn');
+    const dropZone = document.getElementById('dropZone');
 
-    let files = [];
+    let selectedFiles = [];
+    let zipBlob = null;
+    let convertedBlobs = [];
 
-    function updateFileList() {
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.style.background = '#d0eaff';
+    });
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.style.background = '#eef6ff';
+    });
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.style.background = '#eef6ff';
+      const dropped = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith("image/"));
+      if (selectedFiles.length + dropped.length > 10) {
+        alert("⚠ You can only upload up to 10 images.");
+        return;
+      }
+      selectedFiles = selectedFiles.concat(dropped);
+      renderFileList();
+      updateFileCounters();
+    });
+
+    fileInput.addEventListener('change', () => {
+      const files = Array.from(fileInput.files);
+      if (selectedFiles.length + files.length > 10) {
+        alert("⚠ You can only upload up to 10 images.");
+        return;
+      }
+      selectedFiles = selectedFiles.concat(files);
+      renderFileList();
+      updateFileCounters();
+    });
+
+    function updateFileCounters() {
+      fileCounterTop.textContent = selectedFiles.length;
+      fileCounterBottom.textContent = selectedFiles.length;
+    }
+
+    function removeFile(index) {
+      selectedFiles.splice(index, 1);
+      renderFileList();
+      updateFileCounters();
+    }
+
+    function renderFileList() {
       fileList.innerHTML = '';
-      files.forEach((file, index) => {
+      convertedBlobs = [];
+
+      selectedFiles.forEach((file, index) => {
         const item = document.createElement('div');
         item.className = 'file-item';
-        const thumb = document.createElement('img');
-        thumb.src = URL.createObjectURL(file);
+
+        const reader = new FileReader();
+        const info = document.createElement('div');
+        info.className = 'file-info';
+
+        const img = document.createElement('img');
         const name = document.createElement('span');
         name.textContent = file.name;
+
+        reader.onload = e => img.src = e.target.result;
+        reader.readAsDataURL(file);
+
+        info.appendChild(img);
+        info.appendChild(name);
+
+        const actions = document.createElement('div');
+        actions.className = 'file-actions';
+
+        const btn = document.createElement('button');
+        btn.textContent = "⬇ Download";
+        btn.className = "hidden download-btn";
+        btn.onclick = () => {
+          const url = URL.createObjectURL(convertedBlobs[index]);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = file.name.replace(/\.[^/.]+$/, "") + "." + document.getElementById("formatSelect").value;
+          a.click();
+        };
+
         const removeBtn = document.createElement('button');
         removeBtn.className = 'remove-btn';
-        removeBtn.textContent = '✖';
-        removeBtn.onclick = () => {
-          files.splice(index, 1);
-          updateFileList();
-        };
-        item.append(thumb, name, removeBtn);
+        removeBtn.innerHTML = "&times;";
+        removeBtn.onclick = () => removeFile(index);
+
+        actions.appendChild(btn);
+        actions.appendChild(removeBtn);
+
+        item.appendChild(info);
+        item.appendChild(actions);
         fileList.appendChild(item);
       });
-      counter.textContent = `Selected files: ${files.length}`;
     }
 
-    dropArea.addEventListener('click', () => fileElem.click());
-
-    dropArea.addEventListener('dragover', e => {
+    document.getElementById('convertForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      dropArea.style.background = '#eef';
-    });
+      output.textContent = "⏳ Converting...";
+      zipBlob = null;
+      convertedBlobs = [];
+      downloadZipContainer.classList.add("hidden");
 
-    dropArea.addEventListener('dragleave', () => {
-      dropArea.style.background = '';
-    });
-
-    dropArea.addEventListener('drop', e => {
-      e.preventDefault();
-      dropArea.style.background = '';
-      handleFiles(e.dataTransfer.files);
-    });
-
-    fileElem.addEventListener('change', () => {
-      handleFiles(fileElem.files);
-    });
-
-    function handleFiles(selectedFiles) {
-      [...selectedFiles].forEach(file => {
-        if (files.length < 10) files.push(file);
-      });
-      updateFileList();
-    }
-
-    convertBtn.addEventListener('click', async () => {
-      if (files.length === 0) return alert('No files selected.');
-      const format = document.getElementById('format').value;
+      const format = document.getElementById('formatSelect').value;
       const formData = new FormData();
-      files.forEach(file => formData.append('files', file));
+      selectedFiles.forEach(file => formData.append('files', file));
       formData.append('format', format);
-      statusBox.textContent = 'Uploading and converting...';
 
       try {
         const response = await fetch('https://image-converter-backend-69of.onrender.com/convert', {
@@ -192,14 +274,40 @@
 
         if (!response.ok) throw new Error('Conversion failed');
 
-        const blob = await response.blob();
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `converted_images.${format === 'jpeg' ? 'zip' : 'zip'}`;
-        a.click();
-        statusBox.textContent = 'Done. Your download should start.';
+        const zip = await response.blob();
+        zipBlob = zip;
+
+        const zipBuffer = await zip.arrayBuffer();
+        const zipData = new JSZip();
+        const loaded = await zipData.loadAsync(zipBuffer);
+
+        const keys = Object.keys(loaded.files);
+        for (const key of keys) {
+          const file = loaded.files[key];
+          const blob = await file.async("blob");
+          convertedBlobs.push(blob);
+        }
+
+        const buttons = document.querySelectorAll('.file-actions button:first-child');
+        buttons.forEach((btn, i) => {
+          if (convertedBlobs[i]) btn.classList.remove("hidden");
+        });
+
+        output.innerHTML = "✅ Conversion complete.";
+        downloadZipContainer.classList.remove("hidden");
       } catch (err) {
-        statusBox.textContent = 'Error: ' + err.message;
+        console.error(err);
+        output.textContent = "❌ Error: " + err.message;
+      }
+    });
+
+    downloadZipBtn.addEventListener('click', () => {
+      if (zipBlob) {
+        const url = URL.createObjectURL(zipBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "converted_images.zip";
+        a.click();
       }
     });
   </script>

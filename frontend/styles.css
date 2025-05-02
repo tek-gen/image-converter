@@ -1,0 +1,183 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #f0f2f5;
+  margin: 0;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+.container {
+  background: white;
+  padding: 2rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.drop-zone {
+  border: 2px dashed #007bff;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  text-align: center;
+  background: #eef6ff;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+.drop-zone p {
+  margin: 0.5rem 0;
+  font-weight: 500;
+}
+input[type="file"],
+select,
+button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  margin-top: 0.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+}
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1.2rem;
+}
+button:hover {
+  background-color: #0056b3;
+}
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+}
+.file-info {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  overflow: hidden;
+}
+.file-info img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 0.75rem;
+}
+.file-info span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.file-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.file-actions button {
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+}
+.download-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 0 1rem;
+  height: 40px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.4rem;
+}
+.download-btn:hover {
+  background-color: #218838;
+}
+.remove-btn {
+  width: 40px !important;
+  height: 40px !important;
+  background: #e0e0e0;
+  color: #555;
+  font-size: 1.25rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.remove-btn:hover {
+  background: #ffdddd;
+  color: red;
+}
+.output {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+.zip-button {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.zip-button:hover {
+  background-color: #218838;
+}
+.progress-bar {
+  width: 100px;
+  height: 10px;
+  background-color: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background-color: #28a745;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+.hidden {
+  display: none;
+}
+.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+  opacity: 0;
+}
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+@media (max-width: 480px) {
+  .file-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .file-actions button {
+    width: 100%;
+  }
+}

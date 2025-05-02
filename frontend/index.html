@@ -185,7 +185,7 @@
       statusBox.textContent = 'Uploading and converting...';
 
       try {
-        const response = await fetch('http://localhost:8000/convert', {
+        const response = await fetch('https://image-converter-backend.onrender.com/convert', {
           method: 'POST',
           body: formData
         });

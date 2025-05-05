@@ -7,33 +7,58 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Image Converter</h1>
-    <div class="drop-zone" id="dropZone">
-      <p>📂 Drag and drop up to 10 images or click to select</p>
-      <input type="file" id="fileInput" accept="image/*" multiple hidden />
-      <div>Selected files: <span id="fileCounterTop">0</span></div>
+  <div class="layout">
+
+    <!-- User Info Card -->
+    <div class="user-bar card">
+      <div id="userStatus">👤 Guest (Free)</div>
+
+      <div id="usageProgressContainer" class="hidden">
+        <span>📊</span>
+        <progress id="usageProgress" max="100" value="0"></progress>
+        <span id="usageText">0 / 0</span>
+      </div>
+
+      <div class="auth-buttons">
+        <button id="loginBtn" class="btn">🔐 Sign in with Google</button>
+        <button id="logoutBtn" class="btn hidden">🚪 Logout</button>
+      </div>
     </div>
-    <form id="convertForm">
-      <label for="formatSelect">Output format</label>
-      <select id="formatSelect" required>
-        <option value="png">PNG</option>
-        <option value="jpeg">JPEG</option>
-        <option value="webp">WEBP</option>
-      </select>
-      <button type="submit">Convert</button>
-    </form>
-    <div class="file-list" id="fileList"></div>
-    <div class="output" id="outputArea"></div>
-    <div id="downloadZipContainer" class="hidden">
-      <button id="downloadZipBtn" class="zip-button">
-        📦 Download all as ZIP
-      </button>
-    </div>
+
+    <!-- Converter -->
+    <main class="container card">
+      <h1>Image Converter</h1>
+
+      <div class="drop-zone" id="dropZone">
+        <p>📂 Drag and drop up to 10 images or click to select</p>
+        <input type="file" id="fileInput" accept="image/*" multiple hidden />
+        <div>Selected files: <span id="fileCounterTop">0</span></div>
+      </div>
+
+      <form id="convertForm">
+        <label for="formatSelect">Output format</label>
+        <select id="formatSelect" required>
+          <option value="png">PNG</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WEBP</option>
+        </select>
+        <button type="submit">Convert</button>
+      </form>
+
+      <div class="file-list" id="fileList"></div>
+      <div class="output" id="outputArea"></div>
+
+      <div id="downloadZipContainer" class="hidden">
+        <button id="downloadZipBtn" class="zip-button">📦 Download all as ZIP</button>
+      </div>
+    </main>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="config.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="auth.js"></script>
+  <script type="module" src="main.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>

@@ -1,9 +1,10 @@
 // firebase-config.js
+// Ensure env.js defines the required keys on `window.env`
 export const firebaseConfig = {
-  apiKey: "AIzaSyBlOV6dMrcj50p_xrlA76HIrxMAP_Jaqm0",
-  authDomain: "png-webp-jpeg-image-converter.firebaseapp.com",
-  projectId: "png-webp-jpeg-image-converter",
-  storageBucket: "png-webp-jpeg-image-converter.appspot.com",
-  messagingSenderId: "538545308492",
-  appId: "1:538545308492:web:custom_app_id"
+  apiKey: window.env?.FIREBASE_API_KEY,
+  authDomain: window.env?.FIREBASE_AUTH_DOMAIN,
+  projectId: window.env?.FIREBASE_PROJECT_ID,
+  storageBucket: window.env?.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: window.env?.FIREBASE_MESSAGING_SENDER_ID,
+  appId: window.env?.FIREBASE_APP_ID,
 };

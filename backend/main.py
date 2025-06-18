@@ -3,14 +3,24 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from io import BytesIO
+import os
 from converter import convert_multiple_images
 
 app = FastAPI()
 
-# Разрешаем запросы от любых источников (для локального frontend)
+# Настройка CORS. Разрешённые источники можно задать через переменную
+# окружения FRONTEND_ORIGINS (список URL через запятую). По умолчанию
+# разрешены все источники.
+frontend_origins = os.getenv("FRONTEND_ORIGINS", "*")
+allowed_origins = (
+    [origin.strip() for origin in frontend_origins.split(",")]
+    if frontend_origins != "*"
+    else ["*"]
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

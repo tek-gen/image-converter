@@ -3,6 +3,8 @@ from io import BytesIO
 from zipfile import ZipFile
 from typing import List
 from fastapi import UploadFile
+import os
+import re
 
 async def convert_multiple_images(files: List[UploadFile], target_format: str) -> BytesIO:
     zip_io = BytesIO()
@@ -23,7 +25,10 @@ async def convert_multiple_images(files: List[UploadFile], target_format: str) -
             output_io.seek(0)
 
             # Добавление в ZIP с оригинальным именем
-            base_name = file.filename.rsplit('.', 1)[0]
+            # Защита от передачи путей в имени файла
+            sanitized = os.path.basename(file.filename)
+            sanitized = re.sub(r"[\\/:]+", "_", sanitized)
+            base_name = sanitized.rsplit('.', 1)[0]
             zip_name = f"{base_name}.{target_format.lower()}"
             zip_file.writestr(zip_name, output_io.read())
 

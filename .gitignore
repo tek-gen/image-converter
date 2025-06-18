@@ -4,3 +4,4 @@
 # Except this folder
 !frontend/
 !frontend/**/*
+frontend/env.js

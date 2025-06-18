@@ -13,6 +13,17 @@ This is a FastAPI-based backend for converting up to 10 uploaded images to the d
 - Uses `Pillow` and `python-multipart`
 - Separated logic in `converter.py`
 
+### CORS configuration
+
+The backend reads allowed origins from the `FRONTEND_ORIGINS` environment
+variable. Provide a comma-separated list of frontend URLs, e.g.:
+
+```bash
+export FRONTEND_ORIGINS="http://localhost:8080,https://myapp.example.com"
+```
+
+When not set, all origins are allowed (useful for local development).
+
 ---
 
 ## 🛠 Local Run

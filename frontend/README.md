@@ -2,7 +2,8 @@
 
 This frontend relies on Firebase for authentication and usage tracking.
 Sensitive credentials are not stored in version control. To run the frontend you
-must provide them in a local `env.js` file.
+must first create a local `env.js` file by copying `env.example.js` and filling
+in your own Firebase project keys.
 
 ## Configuration
 

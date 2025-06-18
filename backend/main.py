@@ -2,8 +2,8 @@ from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
-from io import BytesIO
 from converter import convert_multiple_images
+from validation import validate_uploads
 
 app = FastAPI()
 
@@ -21,6 +21,9 @@ async def convert(
     files: List[UploadFile] = File(...),
     format: str = Form(...)
 ):
+    # Validation
+    validate_uploads(files, format)
+
     # Обработка файлов и упаковка в ZIP
     zip_io = await convert_multiple_images(files, format)
 
@@ -31,3 +34,4 @@ async def convert(
             "Content-Disposition": "attachment; filename=converted_images.zip"
         }
     )
+

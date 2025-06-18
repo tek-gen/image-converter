@@ -1,17 +1,18 @@
 
 # 🖼️ Image Converter (FastAPI backend)
 
-This is a FastAPI-based backend for converting up to 10 uploaded images to the desired format (PNG, JPEG, WEBP), returning them as a single ZIP archive.
+This is a FastAPI-based backend for converting up to 10 uploaded images to the desired format (PNG, JPEG, WEBP), returning them as a single ZIP archive. Each uploaded file must not exceed 5&nbsp;MB.
 
 ---
 
 ## 🔧 Features
 
 - Endpoint: `POST /convert`
-- Accepts up to 10 images via multipart form
+- Accepts up to 10 images via multipart form (max 5&nbsp;MB each)
 - Returns a ZIP archive with converted images
 - Uses `Pillow` and `python-multipart`
 - Separated logic in `converter.py`
+- Format parameter must be one of `png`, `jpeg`, or `webp`
 
 ---
 

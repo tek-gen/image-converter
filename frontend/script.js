@@ -169,7 +169,6 @@ document.getElementById('convertForm').addEventListener('submit', async (e) => {
       output.textContent = `⚠ Only ${remaining} of ${unconvertedIndexes.length} new images will be converted due to limits.`;
       unconvertedIndexes.length = remaining;
       if (unconvertedIndexes.length === 0) {
-        unconvertedIndexes.splice(remaining);
         output.textContent = "❌ Daily usage limit exceeded. No more images can be converted today.";
         isConverting = false;
         return;
